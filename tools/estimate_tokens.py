@@ -21,15 +21,38 @@ calls for this tool. Instead it:
      those are available from the logs/JSON, and clearly-flagged HEURISTIC
      estimates wherever the real text was never logged (see ASSUMPTIONS).
 
+THREE TIERS, NOT TWO
+--------------------
+The Green Bone Protocol hierarchy has three model grades (see
+greenbone/agents.py's MODEL_TIERS — the single config this script reads
+prices and tier assignments from, never a hardcoded model string):
+
+  HEAD    (Pillar / Channeling — Horn, the coordinator at the top)  -> Opus 4.8
+  COMMAND (Perception — Weatherman)                                 -> Sonnet 5
+  FIELD   (Lightness — Rats, Intel Fists, Execution Fists, Fingers)  -> Haiku 4.5
+
+This is a change from the framework's earlier 2-tier Command/Field split,
+where Horn and Weatherman were both priced at Sonnet. Horn (Channeling) is
+now its own Head tier, priced at Opus.
+
 THE COST-REDUCTION NUMBER IS ROBUST TO TOKENIZER BIAS
 ------------------------------------------------------
-Both configs below (TIERED and ALL-COMMAND) use the *exact same* token
+Both configs below (TIERED and ALL-HEAD) use the *exact same* token
 counts — the Green Bone Protocol split does not change how many tokens are
 sent, only which model tier is billed for them. So any systematic over/under
 count from using cl100k_base instead of Claude's real tokenizer applies
 equally to both configs' numerators and denominators and **cancels out of
 the % cost-reduction ratio**. The ratio is far more trustworthy than either
 absolute dollar figure.
+
+PRICING NOTE
+------------
+Rates below are the current published Claude API per-million-token rates
+(input/output) as of this writing: Opus 4.8 $5/$25, Sonnet 5 $3/$15 standard
+rate, Haiku 4.5 $1/$5. Sonnet 5 also has an introductory rate of $2/$10
+through 2026-08-31 — this script deliberately prices at the standard,
+non-promotional rate so the estimate doesn't go stale the day the intro
+period ends. Swap PRICES below if you want the introductory number instead.
 
 WHICH RUN THIS RECONSTRUCTS
 ----------------------------
@@ -62,9 +85,10 @@ A5. KnowledgeRat's input has no external data dependency, so it is
 A6. Horn's plan-output JSON uses the REAL subtask text as logged, but
     run2.log truncates each subtask at 70 chars (`task.goal[:70]` in
     clan.py's `_log` call). This likely UNDERCOUNTS Horn's true output
-    tokens somewhat. Immaterial to totals: Horn is 1 of only 2 Command
-    calls, and the Weatherman's dossier-synthesis call dominates Command
-    volume.
+    tokens somewhat. Horn is the sole Head-tier call in this run (Horn is
+    Channeling -> Head/Opus; Weatherman is Perception -> Command/Sonnet),
+    so this undercount applies to the Head-tier total specifically, not to
+    Command's.
 A7. The exact CLI `--goal` string used for this commission was not
     captured in the run logs (only `target=Anthropic` and truncated
     subtask fragments were). A representative goal consistent with the
@@ -132,24 +156,31 @@ def chars_to_tokens_heuristic(n_chars: float) -> int:
 # (imported, not re-typed, so this script can't silently drift from the
 # real prompts as the codebase evolves)
 os.environ.setdefault("ANTHROPIC_API_KEY", "")  # agents.py builds a client at import time
-from greenbone.types import Dossier                      # noqa: E402
-from greenbone.clan import Weatherman, Horn               # noqa: E402
-import tasks.research.task as rt                          # noqa: E402
+from greenbone.types import Dossier                       # noqa: E402
+from greenbone.clan import Weatherman, Horn                # noqa: E402
+from greenbone.agents import MODEL_TIERS, Tier             # noqa: E402 - the ONE tier->model config
+import tasks.research.task as rt                           # noqa: E402
 
 WEATHERMAN_SYSTEM_PROMPT = Weatherman.system_prompt
 HORN_SYSTEM_PROMPT_OVERRIDE = rt.build_clan().horn.system_prompt  # research/task.py override
 
+# $ per token, current published Claude API rates (see PRICING NOTE in the
+# module docstring for source + the Sonnet 5 introductory-pricing caveat).
+# Keyed by Tier so this cost study always prices each call at whatever model
+# greenbone/agents.py's MODEL_TIERS currently assigns to that tier - it does
+# NOT hardcode "sonnet"/"haiku"/"opus" as separate call-sites the way the old
+# 2-tier version did.
 PRICES = {
-    # $ per token (published, current)
-    "sonnet": {"in": 3.00 / 1_000_000, "out": 15.00 / 1_000_000},
-    "haiku":  {"in": 1.00 / 1_000_000, "out": 5.00 / 1_000_000},
+    Tier.HEAD:    {"in": 5.00 / 1_000_000, "out": 25.00 / 1_000_000},   # claude-opus-4-8
+    Tier.COMMAND: {"in": 3.00 / 1_000_000, "out": 15.00 / 1_000_000},   # claude-sonnet-5 (standard rate)
+    Tier.FIELD:   {"in": 1.00 / 1_000_000, "out": 5.00 / 1_000_000},    # claude-haiku-4-5
 }
 
 
 @dataclass
 class Call:
     name: str
-    tier: str            # "COMMAND" or "FIELD"
+    tier: str            # "HEAD", "COMMAND", or "FIELD" (matches Tier.<name>)
     input_tokens: int
     output_tokens: int
     input_basis: str      # provenance label
@@ -193,7 +224,8 @@ GOAL = (
 )
 
 # =========================================================================
-# COMMAND tier (Sonnet): Weatherman dossier-synthesis + Horn planning
+# COMMAND tier (Sonnet 5): Weatherman dossier-synthesis
+# HEAD tier (Opus 4.8): Horn planning
 # =========================================================================
 
 # --- Call 1: Weatherman._synthesise_dossier ------------------------------
@@ -263,7 +295,7 @@ horn_output_tokens = count_tokens(horn_plan_output)
 
 calls.append(Call(
     name="horn.run._llm_json (planning)",
-    tier="COMMAND",
+    tier="HEAD",  # Horn = Channeling = Head tier (Opus) under the 3-tier hierarchy
     input_tokens=horn_input_tokens,
     output_tokens=horn_output_tokens,
     input_basis="REAL (tiktoken: real dossier context block + real template + real fist types)",
@@ -410,30 +442,37 @@ calls.append(Call(
 # =========================================================================
 # Aggregate per tier, then price under both configs
 # =========================================================================
+head_calls    = [c for c in calls if c.tier == "HEAD"]
 command_calls = [c for c in calls if c.tier == "COMMAND"]
-field_calls = [c for c in calls if c.tier == "FIELD"]
+field_calls   = [c for c in calls if c.tier == "FIELD"]
 
-command_in = sum(c.input_tokens for c in command_calls)
+head_in     = sum(c.input_tokens for c in head_calls)
+head_out    = sum(c.output_tokens for c in head_calls)
+command_in  = sum(c.input_tokens for c in command_calls)
 command_out = sum(c.output_tokens for c in command_calls)
-field_in = sum(c.input_tokens for c in field_calls)
-field_out = sum(c.output_tokens for c in field_calls)
+field_in    = sum(c.input_tokens for c in field_calls)
+field_out   = sum(c.output_tokens for c in field_calls)
 
-def cost(tokens_in, tokens_out, price_key):
-    p = PRICES[price_key]
+def cost(tokens_in, tokens_out, tier: Tier):
+    p = PRICES[tier]
     return tokens_in * p["in"], tokens_out * p["out"]
 
-# TIERED (Green Bone Protocol): Command @ Sonnet, Field @ Haiku
-tiered_cmd_in_cost, tiered_cmd_out_cost = cost(command_in, command_out, "sonnet")
-tiered_fld_in_cost, tiered_fld_out_cost = cost(field_in, field_out, "haiku")
-tiered_in_cost = tiered_cmd_in_cost + tiered_fld_in_cost
-tiered_out_cost = tiered_cmd_out_cost + tiered_fld_out_cost
+# TIERED (Green Bone Protocol, 3 tiers): Head @ Opus, Command @ Sonnet, Field @ Haiku
+tiered_head_in_cost, tiered_head_out_cost = cost(head_in, head_out, Tier.HEAD)
+tiered_cmd_in_cost, tiered_cmd_out_cost = cost(command_in, command_out, Tier.COMMAND)
+tiered_fld_in_cost, tiered_fld_out_cost = cost(field_in, field_out, Tier.FIELD)
+tiered_in_cost = tiered_head_in_cost + tiered_cmd_in_cost + tiered_fld_in_cost
+tiered_out_cost = tiered_head_out_cost + tiered_cmd_out_cost + tiered_fld_out_cost
 tiered_total = tiered_in_cost + tiered_out_cost
 
-# ALL-COMMAND baseline: identical token counts, everything priced at Sonnet
-allcmd_in_cost, allcmd_out_cost = cost(command_in + field_in, command_out + field_out, "sonnet")
-allcmd_total = allcmd_in_cost + allcmd_out_cost
+# ALL-HEAD baseline: identical token counts, everything run at the HEAD tier
+# (all-Opus) — i.e. what it would cost with no Command/Field split at all.
+total_in = head_in + command_in + field_in
+total_out = head_out + command_out + field_out
+allhead_in_cost, allhead_out_cost = cost(total_in, total_out, Tier.HEAD)
+allhead_total = allhead_in_cost + allhead_out_cost
 
-pct_reduction = (allcmd_total - tiered_total) / allcmd_total * 100
+pct_reduction = (allhead_total - tiered_total) / allhead_total * 100
 
 # =========================================================================
 # Output: markdown report to stdout + JSON artifact
@@ -455,18 +494,19 @@ lines.append(
 lines.append("## Per-tier token totals\n")
 lines.append("| Tier | Model | Calls | Input tokens (approx) | Output tokens (approx) |")
 lines.append("|---|---|---:|---:|---:|")
-lines.append(f"| Command (PERCEPTION+CHANNELING) | claude-sonnet-4-6 | {len(command_calls)} | {command_in:,} | {command_out:,} |")
-lines.append(f"| Field (LIGHTNESS) | claude-haiku-4-5 | {len(field_calls)} | {field_in:,} | {field_out:,} |")
+lines.append(f"| Head (CHANNELING) | {MODEL_TIERS[Tier.HEAD]} | {len(head_calls)} | {head_in:,} | {head_out:,} |")
+lines.append(f"| Command (PERCEPTION) | {MODEL_TIERS[Tier.COMMAND]} | {len(command_calls)} | {command_in:,} | {command_out:,} |")
+lines.append(f"| Field (LIGHTNESS) | {MODEL_TIERS[Tier.FIELD]} | {len(field_calls)} | {field_in:,} | {field_out:,} |")
 lines.append(f"| Steel (STEEL) | deterministic, no LLM | n/a | ~0 | ~0 |")
 lines.append("")
 
 lines.append("## Cost by configuration\n")
 lines.append("| Config | Input $ | Output $ | Total $ |")
 lines.append("|---|---:|---:|---:|")
-lines.append(f"| **Tiered (Green Bone Protocol)** | ${tiered_in_cost:.4f} | ${tiered_out_cost:.4f} | ${tiered_total:.4f} |")
-lines.append(f"| **All-Command (baseline)** | ${allcmd_in_cost:.4f} | ${allcmd_out_cost:.4f} | ${allcmd_total:.4f} |")
+lines.append(f"| **Tiered (Green Bone Protocol, 3 tiers)** | ${tiered_in_cost:.4f} | ${tiered_out_cost:.4f} | ${tiered_total:.4f} |")
+lines.append(f"| **All-Head baseline (everything at Opus)** | ${allhead_in_cost:.4f} | ${allhead_out_cost:.4f} | ${allhead_total:.4f} |")
 lines.append("")
-lines.append(f"**% cost reduction, Tiered vs All-Command: {pct_reduction:.1f}%**\n")
+lines.append(f"**% cost reduction, Tiered vs All-Head: {pct_reduction:.1f}%**\n")
 
 lines.append("## Per-call breakdown (provenance-labeled)\n")
 lines.append("| Call | Tier | In tok | Out tok | Input basis | Output basis |")
@@ -495,12 +535,17 @@ lines.append(
     "use documented heuristics (55% of configured max_tokens for completions, A1; 70% of the "
     "8000-char page cap for the one logged URL, A2; ~15 repos x 80 chars for GitHub, A3) rather "
     "than fabricated text. Horn's plan output uses real but 70-char-truncated subtask text (A6), "
-    "likely a small undercount, immaterial to totals."
+    "likely a small undercount to the Head tier specifically."
 )
 lines.append(
     "- All averages/ratios above are clearly-labeled heuristics, not measurements; every call "
     "row's Input/Output basis column states exactly which parts are REAL (tokenized logged text "
     "or exact code templates) vs HEURISTIC."
+)
+lines.append(
+    "- Model tiers and prices are read from `greenbone.agents.MODEL_TIERS` / this script's "
+    "`PRICES` dict, not hardcoded per call site — see the module docstring's PRICING NOTE for "
+    "the exact rates and the Sonnet 5 introductory-pricing caveat."
 )
 
 report_md = "\n".join(lines)
@@ -514,14 +559,16 @@ result = {
         "Claude's real (undisclosed) tokenizer, plus reconstructed prompt templates from the "
         "actual pipeline code (greenbone/clan.py, tasks/research/task.py). NOT a measurement of "
         "real Anthropic API `usage` fields. Token counts are identical across the Tiered and "
-        "All-Command configs by construction; only the price applied differs, so tokenizer bias "
+        "All-Head configs by construction; only the price applied differs, so tokenizer bias "
         "cancels out of the %-cost-reduction ratio. See tools/estimate_tokens.py module docstring "
-        "for the full list of labeled assumptions (A1-A9)."
+        "for the full list of labeled assumptions (A1-A9) and the PRICING NOTE."
     ),
     "tokenizer": TOKENIZER_LABEL,
     "used_tiktoken": USED_TIKTOKEN,
     "reconstructed_from_run": "tasks/research/task.py (identified via output/run.log, output/run2.log)",
+    "model_tiers": {tier.value: model_id for tier, model_id in MODEL_TIERS.items()},
     "per_tier_tokens": {
+        "head": {"calls": len(head_calls), "input_tokens": head_in, "output_tokens": head_out},
         "command": {"calls": len(command_calls), "input_tokens": command_in, "output_tokens": command_out},
         "field": {"calls": len(field_calls), "input_tokens": field_in, "output_tokens": field_out},
         "steel": {"calls": None, "input_tokens": 0, "output_tokens": 0, "note": "deterministic, ~0 tokens"},
@@ -532,14 +579,14 @@ result = {
             "output_cost_usd": tiered_out_cost,
             "total_cost_usd": tiered_total,
         },
-        "all_command_baseline": {
-            "input_cost_usd": allcmd_in_cost,
-            "output_cost_usd": allcmd_out_cost,
-            "total_cost_usd": allcmd_total,
+        "all_head_baseline": {
+            "input_cost_usd": allhead_in_cost,
+            "output_cost_usd": allhead_out_cost,
+            "total_cost_usd": allhead_total,
         },
     },
-    "pct_cost_reduction_tiered_vs_all_command": pct_reduction,
-    "prices_usd_per_token": PRICES,
+    "pct_cost_reduction_tiered_vs_all_head": pct_reduction,
+    "prices_usd_per_token": {tier.value: rates for tier, rates in PRICES.items()},
     "calls": [
         {
             "name": c.name, "tier": c.tier,

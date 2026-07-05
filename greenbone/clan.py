@@ -3,14 +3,14 @@ import json
 import concurrent.futures
 from typing import Any
 from greenbone.types import Task, Result, Rank, Dossier, Discipline
-from greenbone.agents import Agent, COMMAND, FIELD
+from greenbone.agents import Agent, model_for
 from greenbone.steel import Steel
 
 
 class WhiteRat(Agent):
     rank       = Rank.WHITE_RAT
     discipline = Discipline.LIGHTNESS
-    model = FIELD
+    model = model_for(Discipline.LIGHTNESS)
     system_prompt = "You are a data scout. Extract raw intelligence. Return JSON."
 
     def run(self, task: Task) -> Result:
@@ -20,7 +20,7 @@ class WhiteRat(Agent):
 class IntelFist(Agent):
     rank       = Rank.FIST
     discipline = Discipline.LIGHTNESS
-    model = FIELD
+    model = model_for(Discipline.LIGHTNESS)
     system_prompt = "You clean and structure raw intelligence data. Return JSON."
 
     def run(self, task: Task) -> Result:
@@ -30,7 +30,7 @@ class IntelFist(Agent):
 class Finger(Agent):
     rank       = Rank.FINGER
     discipline = Discipline.LIGHTNESS
-    model = FIELD
+    model = model_for(Discipline.LIGHTNESS)
     system_prompt = "You perform a single precise action and return the result."
 
     def run(self, task: Task) -> Result:
@@ -40,7 +40,7 @@ class Finger(Agent):
 class ExecutionFist(Agent):
     rank       = Rank.FIST
     discipline = Discipline.LIGHTNESS
-    model = FIELD
+    model = model_for(Discipline.LIGHTNESS)
     system_prompt = "You execute a specific class of task using dossier intelligence."
 
     def run(self, task: Task) -> Result:
@@ -51,7 +51,7 @@ class Weatherman(Agent):
     name = "weatherman"
     rank = Rank.WEATHERMAN
     discipline = Discipline.PERCEPTION
-    model = COMMAND
+    model = model_for(Discipline.PERCEPTION)
     system_prompt = (
         "You are the Weatherman — the intelligence commander of the clan. "
         "You see everything before the Horn strikes. "
@@ -159,7 +159,7 @@ class Horn(Agent):
     name = "horn"
     rank = Rank.HORN
     discipline = Discipline.CHANNELING
-    model = COMMAND
+    model = model_for(Discipline.CHANNELING)
     system_prompt = (
         "You are the Horn — the execution commander of the clan. "
         "You receive a Dossier and a goal. You plan the strike and split it into "

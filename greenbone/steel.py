@@ -20,7 +20,7 @@ import json
 import re
 
 from greenbone.types import Task, Result, Rank, Dossier, Discipline
-from greenbone.agents import Agent, FIELD
+from greenbone.agents import Agent, model_for
 
 MAX_FIELD_LEN = 4000
 MAX_LIST_ITEMS = 40
@@ -49,7 +49,7 @@ class Steel(Agent):
     name = "steel"
     rank = Rank.STEEL
     discipline = Discipline.STEEL
-    model = FIELD
+    model = model_for(Discipline.STEEL)
     system_prompt = (
         "You are Steel — damage resistance. You repair a broken Dossier into a "
         "minimally safe, honest structure using ONLY the raw material given to "

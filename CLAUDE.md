@@ -9,15 +9,15 @@
 
 ```
 You (Pillar)
-├── Weatherman  [sonnet-4-6]   — intelligence, strategy, never executes
-│     ├── White Rats  [haiku-4-5]   — disposable scouts, raw data only
-│     └── Intel Fists  [haiku-4-5]  — clean, parse, structure rat data
+├── Weatherman  [sonnet-5, Command]   — intelligence, strategy, never executes
+│     ├── White Rats  [haiku-4-5, Field]   — disposable scouts, raw data only
+│     └── Intel Fists  [haiku-4-5, Field]  — clean, parse, structure rat data
 │           ↓
 │         Dossier  ← sealed intel package, handed to Horn
 │
-└── Horn  [sonnet-4-6]   — reads dossier, plans strike, never researches
-      └── Execution Fists  [haiku-4-5]  — carry out the plan
-            └── Fingers  [haiku-4-5]   — single tool, single action
+└── Horn  [opus-4-8, Head]   — reads dossier, plans strike, never researches
+      └── Execution Fists  [haiku-4-5, Field]  — carry out the plan
+            └── Fingers  [haiku-4-5, Field]   — single tool, single action
 ```
 
 **The Pillar (you) commissions a goal + target. The system handles everything else.**
@@ -44,12 +44,15 @@ The Horn never does his own research. If information is missing, that is a Weath
 
 ## Model Tiers
 
-| Tier | Model | Used by | Why |
-|---|---|---|---|
-| **Command** | `claude-sonnet-4-6` | Horn, Weatherman | High judgment, planning, synthesis |
-| **Field** | `claude-haiku-4-5` | Rats, Fists, Fingers | Fast, cheap, disposable, parallel |
+Three model grades, configured in one place — `MODEL_TIERS` in `greenbone/agents.py` — never hardcoded per agent:
 
-Command agents are expensive. Minimise their token usage. Field agents are free to be verbose — they are throwaway workers.
+| Tier | Model (default) | Used by | Why |
+|---|---|---|---|
+| **Head** | `claude-opus-4-8` | Horn (Channeling) | Top of the hierarchy — the one coordinator whose planning quality gates the whole Strike |
+| **Command** | `claude-sonnet-5` | Weatherman (Perception) | High judgment, synthesis |
+| **Field** | `claude-haiku-4-5` | Rats, Fists, Fingers (Lightness); Steel's rare repair pass | Fast, cheap, disposable, parallel |
+
+Head and Command agents are expensive relative to Field. Minimise their token usage. Field agents are free to be verbose — they are throwaway workers. To repoint the framework at different model versions, edit `MODEL_TIERS` in `greenbone/agents.py` — every `Agent` subclass resolves its `model` via `model_for(Discipline.X)`, so nothing else needs to change.
 
 ---
 
@@ -95,7 +98,7 @@ To add a new finger: subclass `Finger`, implement `run()`. Call it from inside a
 
 ## Prompting Rules
 
-**Command agents (Weatherman, Horn):** full context up front, role defined in system prompt, task in user message, structured output format required.
+**Head/Command agents (Horn, Weatherman):** full context up front, role defined in system prompt, task in user message, structured output format required.
 
 **Field agents (Rats, Fists, Fingers):** short direct system prompts, exact output format specified (JSON schema or plain text), no reasoning about whether to act — just act. If they fail, skip them.
 
@@ -111,7 +114,7 @@ To add a new finger: subclass `Finger`, implement `run()`. Call it from inside a
 - Intel Fists degrade gracefully — use previous fist output if one fails
 - Dossier is always sealed — even with partial intel, hand off to Horn
 - Horn never blocks — if a Fist fails, log and continue
-- Never retry Command agents — they are expensive, fix the prompt
+- Never retry Head/Command agents — they are expensive, fix the prompt
 - Retry Field agents freely — two retries before skipping is reasonable
 
 ---

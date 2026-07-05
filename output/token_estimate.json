@@ -1,13 +1,23 @@
 {
-  "methodology": "APPROXIMATE \u2014 tokens derived by tokenizing logged text (output/anthropic_dossier.json, output/anthropic_output.json) with tiktoken cl100k_base as an offline stand-in for Claude's real (undisclosed) tokenizer, plus reconstructed prompt templates from the actual pipeline code (greenbone/clan.py, tasks/research/task.py). NOT a measurement of real Anthropic API `usage` fields. Token counts are identical across the Tiered and All-Command configs by construction; only the price applied differs, so tokenizer bias cancels out of the %-cost-reduction ratio. See tools/estimate_tokens.py module docstring for the full list of labeled assumptions (A1-A9).",
+  "methodology": "APPROXIMATE \u2014 tokens derived by tokenizing logged text (output/anthropic_dossier.json, output/anthropic_output.json) with tiktoken cl100k_base as an offline stand-in for Claude's real (undisclosed) tokenizer, plus reconstructed prompt templates from the actual pipeline code (greenbone/clan.py, tasks/research/task.py). NOT a measurement of real Anthropic API `usage` fields. Token counts are identical across the Tiered and All-Head configs by construction; only the price applied differs, so tokenizer bias cancels out of the %-cost-reduction ratio. See tools/estimate_tokens.py module docstring for the full list of labeled assumptions (A1-A9) and the PRICING NOTE.",
   "tokenizer": "tiktoken cl100k_base (offline, cached at .tiktoken_cache/)",
   "used_tiktoken": true,
   "reconstructed_from_run": "tasks/research/task.py (identified via output/run.log, output/run2.log)",
+  "model_tiers": {
+    "head": "claude-opus-4-8",
+    "command": "claude-sonnet-5",
+    "field": "claude-haiku-4-5"
+  },
   "per_tier_tokens": {
+    "head": {
+      "calls": 1,
+      "input_tokens": 577,
+      "output_tokens": 78
+    },
     "command": {
-      "calls": 2,
-      "input_tokens": 2716,
-      "output_tokens": 476
+      "calls": 1,
+      "input_tokens": 2139,
+      "output_tokens": 398
     },
     "field": {
       "calls": 12,
@@ -23,23 +33,27 @@
   },
   "configs": {
     "tiered_green_bone_protocol": {
-      "input_cost_usd": 0.019681999999999998,
-      "output_cost_usd": 0.06060000000000001,
-      "total_cost_usd": 0.080282
+      "input_cost_usd": 0.020836,
+      "output_cost_usd": 0.061380000000000004,
+      "total_cost_usd": 0.08221600000000001
     },
-    "all_command_baseline": {
-      "input_cost_usd": 0.04275,
-      "output_cost_usd": 0.16752,
-      "total_cost_usd": 0.21027
+    "all_head_baseline": {
+      "input_cost_usd": 0.07125000000000001,
+      "output_cost_usd": 0.2792,
+      "total_cost_usd": 0.35045000000000004
     }
   },
-  "pct_cost_reduction_tiered_vs_all_command": 61.81956532077804,
+  "pct_cost_reduction_tiered_vs_all_head": 76.5398773006135,
   "prices_usd_per_token": {
-    "sonnet": {
+    "head": {
+      "in": 5e-06,
+      "out": 2.5e-05
+    },
+    "command": {
       "in": 3e-06,
       "out": 1.5e-05
     },
-    "haiku": {
+    "field": {
       "in": 1e-06,
       "out": 5e-06
     }
@@ -56,7 +70,7 @@
     },
     {
       "name": "horn.run._llm_json (planning)",
-      "tier": "COMMAND",
+      "tier": "HEAD",
       "input_tokens": 577,
       "output_tokens": 78,
       "input_basis": "REAL (tiktoken: real dossier context block + real template + real fist types)",

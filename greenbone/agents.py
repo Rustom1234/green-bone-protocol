@@ -1,13 +1,55 @@
 from __future__ import annotations
 import json
 import re
+from enum import Enum
 import anthropic
 from greenbone.types import Task, Result, Rank, Discipline
 
 client = anthropic.Anthropic()
 
-COMMAND = "claude-sonnet-4-6"
-FIELD   = "claude-haiku-4-5-20251001"
+
+class Tier(Enum):
+    """The three model grades in the clan's hierarchy, top to bottom."""
+    HEAD    = "head"     # Pillar / Channeling — the coordinator at the top of the hierarchy
+    COMMAND = "command"  # Perception + other Sonnet-grade coordination roles
+    FIELD   = "field"    # Lightness — cheap, high-volume, disposable workers
+
+
+# ---------------------------------------------------------------------------
+# THE single source of truth for "which model backs which tier". Everything
+# else in this codebase (Weatherman, Horn, White Rats, Fists, Fingers, Steel)
+# resolves its model through DISCIPLINE_TIERS + MODEL_TIERS via model_for()
+# rather than hardcoding a model id — change the three values below to
+# repoint the whole framework at different model versions (or providers).
+# ---------------------------------------------------------------------------
+MODEL_TIERS: dict[Tier, str] = {
+    Tier.HEAD:    "claude-opus-4-8",
+    Tier.COMMAND: "claude-sonnet-5",
+    Tier.FIELD:   "claude-haiku-4-5",
+}
+
+# Which Discipline (the framework's actual capability tier, orthogonal to
+# organizational Rank) runs at which model Tier.
+DISCIPLINE_TIERS: dict[Discipline, Tier] = {
+    Discipline.CHANNELING: Tier.HEAD,     # Horn — top of the hierarchy
+    Discipline.PERCEPTION: Tier.COMMAND,  # Weatherman
+    Discipline.LIGHTNESS:  Tier.FIELD,    # White Rats, Intel Fists, Execution Fists, Fingers
+    Discipline.STEEL:      Tier.FIELD,    # deterministic; Haiku only for the rare guarded repair pass
+}
+
+
+def model_for(discipline: Discipline) -> str:
+    """Resolve a Discipline to its configured model id via MODEL_TIERS."""
+    return MODEL_TIERS[DISCIPLINE_TIERS[discipline]]
+
+
+# Convenience aliases for the common case of "give me tier X's model id"
+# without going through a Discipline. Prefer model_for(discipline) when a
+# Discipline is available (e.g. inside the Agent subclasses below) so the
+# role->tier mapping stays declared in one place (DISCIPLINE_TIERS).
+HEAD    = MODEL_TIERS[Tier.HEAD]
+COMMAND = MODEL_TIERS[Tier.COMMAND]
+FIELD   = MODEL_TIERS[Tier.FIELD]
 
 
 class Agent:
