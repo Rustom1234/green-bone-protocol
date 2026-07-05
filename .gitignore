@@ -6,3 +6,11 @@ cloudflared
 *.log
 output/*.log
 .DS_Store
+
+# tokenizer cache (machine-generated, 1.7M blob) — regenerated on first offline run
+.tiktoken_cache/
+
+# legacy scratch / demo run outputs — not part of the framework
+experiments/
+tictactoe/
+hello.py
