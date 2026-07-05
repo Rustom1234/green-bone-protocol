@@ -1,0 +1,91 @@
+<svg viewBox="0 0 1200 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Green Bone Protocol">
+  <title>Green Bone Protocol</title>
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A0F0D"/>
+      <stop offset="55%" stop-color="#0B3D2E"/>
+      <stop offset="100%" stop-color="#080D0B"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="13%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#1FA97A" stop-opacity="0.38"/>
+      <stop offset="60%" stop-color="#1FA97A" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#1FA97A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="goldRim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8C766"/>
+      <stop offset="100%" stop-color="#C9A227"/>
+    </linearGradient>
+    <linearGradient id="goldText" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F0D68A"/>
+      <stop offset="100%" stop-color="#C9A227"/>
+    </linearGradient>
+    <linearGradient id="footerBar" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0B3D2E" stop-opacity="0"/>
+      <stop offset="15%" stop-color="#1FA97A" stop-opacity="0.7"/>
+      <stop offset="50%" stop-color="#E8C766" stop-opacity="0.85"/>
+      <stop offset="85%" stop-color="#1FA97A" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#0B3D2E" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="softBlur" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+  </defs>
+
+  <!-- background -->
+  <rect width="1200" height="360" fill="url(#bgGrad)"/>
+  <rect width="1200" height="360" fill="url(#glow)"/>
+
+  <!-- faint geometric facet lines, corners only -->
+  <g stroke="#E8C766" stroke-opacity="0.10" stroke-width="1">
+    <line x1="900" y1="0" x2="1200" y2="130"/>
+    <line x1="990" y1="0" x2="1200" y2="210"/>
+    <line x1="1080" y1="0" x2="1200" y2="290"/>
+  </g>
+  <g stroke="#1FA97A" stroke-opacity="0.10" stroke-width="1">
+    <line x1="0" y1="300" x2="150" y2="360"/>
+    <line x1="0" y1="235" x2="230" y2="360"/>
+  </g>
+
+  <!-- small brand diamond, far right, echoes the gem -->
+  <g transform="translate(1120,60) rotate(45)" opacity="0.55">
+    <rect x="-16" y="-16" width="32" height="32" fill="none" stroke="url(#goldRim)" stroke-width="1.5"/>
+  </g>
+
+  <!-- faceted jade gem -->
+  <g>
+    <polygon points="150,80 236.6,130 150,180" fill="#3DE8AE"/>
+    <polygon points="236.6,130 236.6,230 150,180" fill="#1FA97A"/>
+    <polygon points="236.6,230 150,280 150,180" fill="#12664B"/>
+    <polygon points="150,280 63.4,230 150,180" fill="#0B3D2E"/>
+    <polygon points="63.4,230 63.4,130 150,180" fill="#0E4A3A"/>
+    <polygon points="63.4,130 150,80 150,180" fill="#26D19B"/>
+    <polygon points="150,80 236.6,130 236.6,230 150,280 63.4,230 63.4,130"
+              fill="none" stroke="url(#goldRim)" stroke-width="3"/>
+    <polygon points="150,98 219.9,136 219.9,224 150,262 80.1,224 80.1,136"
+              fill="none" stroke="#E8C766" stroke-opacity="0.45" stroke-width="1"/>
+    <line x1="150" y1="80" x2="150" y2="180" stroke="#0A0F0D" stroke-opacity="0.25" stroke-width="1"/>
+    <line x1="236.6" y1="130" x2="150" y2="180" stroke="#0A0F0D" stroke-opacity="0.25" stroke-width="1"/>
+    <line x1="236.6" y1="230" x2="150" y2="180" stroke="#0A0F0D" stroke-opacity="0.25" stroke-width="1"/>
+    <line x1="150" y1="280" x2="150" y2="180" stroke="#0A0F0D" stroke-opacity="0.25" stroke-width="1"/>
+    <line x1="63.4" y1="230" x2="150" y2="180" stroke="#0A0F0D" stroke-opacity="0.25" stroke-width="1"/>
+    <line x1="63.4" y1="130" x2="150" y2="180" stroke="#0A0F0D" stroke-opacity="0.25" stroke-width="1"/>
+    <ellipse cx="118" cy="118" rx="44" ry="26" fill="#F2EFE6" opacity="0.28" filter="url(#softBlur)"/>
+  </g>
+
+  <!-- wordmark -->
+  <g font-family="Georgia, 'Times New Roman', Times, serif">
+    <text x="330" y="168" font-size="62" fill="#F2EFE6" font-weight="700" letter-spacing="3">GREEN BONE</text>
+    <text x="332" y="212" font-size="33" fill="url(#goldText)"
+          font-family="'Helvetica Neue', Arial, sans-serif" font-weight="600" letter-spacing="12">PROTOCOL</text>
+  </g>
+
+  <line x1="332" y1="231" x2="960" y2="231" stroke="#C9A227" stroke-opacity="0.55" stroke-width="1"/>
+
+  <text x="332" y="265" font-size="19" fill="#F2EFE6" fill-opacity="0.72"
+        font-family="'Helvetica Neue', Arial, sans-serif" font-style="italic" letter-spacing="0.3">
+    a tiered multi-agent framework — jade grants ability
+  </text>
+
+  <!-- footer accent bar -->
+  <rect x="0" y="354" width="1200" height="2.5" fill="url(#footerBar)"/>
+</svg>

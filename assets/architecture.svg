@@ -1,0 +1,167 @@
+<svg viewBox="0 0 1200 910" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Green Bone Protocol tier and discipline architecture">
+  <title>Green Bone Protocol — Tier &amp; Discipline Architecture</title>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A0F0D"/>
+      <stop offset="60%" stop-color="#0B2019"/>
+      <stop offset="100%" stop-color="#080D0B"/>
+    </linearGradient>
+    <linearGradient id="goldRim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8C766"/>
+      <stop offset="100%" stop-color="#C9A227"/>
+    </linearGradient>
+    <marker id="arrowJade" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1FA97A"/>
+    </marker>
+    <marker id="arrowGold" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#E8C766"/>
+    </marker>
+    <marker id="arrowOff" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#F2EFE6"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="910" fill="url(#bg)"/>
+  <g stroke="#E8C766" stroke-opacity="0.08" stroke-width="1">
+    <line x1="960" y1="0" x2="1200" y2="150"/>
+    <line x1="1060" y1="0" x2="1200" y2="230"/>
+  </g>
+  <g stroke="#1FA97A" stroke-opacity="0.08" stroke-width="1">
+    <line x1="0" y1="780" x2="180" y2="910"/>
+    <line x1="0" y1="700" x2="90" y2="910"/>
+  </g>
+
+  <!-- header -->
+  <text x="60" y="28" font-family="Georgia, 'Times New Roman', serif" font-size="19" fill="#E8C766" letter-spacing="0.5">GREEN BONE PROTOCOL — Tier &amp; Discipline Architecture</text>
+  <line x1="60" y1="38" x2="1140" y2="38" stroke="#E8C766" stroke-opacity="0.25" stroke-width="1"/>
+
+  <!-- ============ PILLAR ============ -->
+  <g>
+    <rect x="460" y="42" width="280" height="52" rx="14" fill="#15191A" stroke="#F2EFE6" stroke-width="2"/>
+    <text x="600" y="65" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="19" font-weight="700" fill="#F2EFE6" letter-spacing="2">PILLAR</text>
+    <text x="600" y="83" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#F2EFE6" fill-opacity="0.6" letter-spacing="0.5">the human · issues the Commission</text>
+  </g>
+  <path d="M600,94 L600,128" stroke="#1FA97A" stroke-width="2.5" marker-end="url(#arrowJade)" fill="none"/>
+
+  <!-- phase 1 label -->
+  <text x="90" y="124" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="700" fill="#E8C766" fill-opacity="0.85" letter-spacing="2">PHASE 1 — INTELLIGENCE</text>
+
+  <!-- ============ WEATHERMAN (PERCEPTION) ============ -->
+  <g>
+    <rect x="460" y="130" width="280" height="58" rx="14" fill="#0E4A3A" stroke="#2FD9A6" stroke-width="2"/>
+    <text x="600" y="159" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="19" font-weight="700" fill="#F2EFE6" letter-spacing="1.5">WEATHERMAN</text>
+    <text x="600" y="178" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12.5" fill="#8FF3D6" letter-spacing="0.5">PERCEPTION · Sonnet</text>
+  </g>
+  <path d="M600,188 L600,205 L255,205 L255,222" stroke="#1FA97A" stroke-width="2.5" marker-end="url(#arrowJade)" fill="none"/>
+  <path d="M600,188 L600,205 L945,205 L945,222" stroke="#1FA97A" stroke-width="2.5" marker-end="url(#arrowJade)" fill="none"/>
+
+  <!-- ============ WHITE RATS + INTEL FISTS (LIGHTNESS) ============ -->
+  <g>
+    <rect x="110" y="230" width="290" height="56" rx="12" fill="#163C2E" stroke="#7FE0AE" stroke-width="2"/>
+    <text x="255" y="258" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="16.5" font-weight="700" fill="#F2EFE6" letter-spacing="1">WHITE RATS</text>
+    <text x="255" y="276" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#B9F5D3" letter-spacing="0.5">LIGHTNESS · Haiku</text>
+  </g>
+  <g>
+    <rect x="800" y="230" width="290" height="56" rx="12" fill="#163C2E" stroke="#7FE0AE" stroke-width="2"/>
+    <text x="945" y="258" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="16.5" font-weight="700" fill="#F2EFE6" letter-spacing="1">INTEL FISTS</text>
+    <text x="945" y="276" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#B9F5D3" letter-spacing="0.5">LIGHTNESS · Haiku</text>
+  </g>
+  <path d="M255,286 L255,305 L560,305 L560,324" stroke="#1FA97A" stroke-width="2.5" marker-end="url(#arrowJade)" fill="none"/>
+  <path d="M945,286 L945,305 L640,305 L640,324" stroke="#1FA97A" stroke-width="2.5" marker-end="url(#arrowJade)" fill="none"/>
+
+  <!-- ============ DOSSIER (artifact) ============ -->
+  <g>
+    <rect x="480" y="330" width="240" height="46" rx="23" fill="#171C19" stroke="#F2EFE6" stroke-width="1.5"/>
+    <text x="600" y="359" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="18" fill="#F2EFE6" letter-spacing="1">Dossier</text>
+  </g>
+  <path d="M600,376 L600,396" stroke="#E8C766" stroke-width="2.5" marker-end="url(#arrowGold)" fill="none"/>
+
+  <!-- ============ STEEL GATE — seam 1 (dossier) ============ -->
+  <g>
+    <rect x="420" y="398" width="360" height="54" rx="10" fill="#1D1912" stroke="url(#goldRim)" stroke-width="2" stroke-dasharray="7 5"/>
+    <text x="600" y="420" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="16" font-weight="700" fill="#F0D68A" letter-spacing="2">STEEL GATE</text>
+    <text x="600" y="438" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#E8C766" fill-opacity="0.85" letter-spacing="0.4">validate + sanitise dossier · ~0 tokens</text>
+  </g>
+  <path d="M600,452 L600,472" stroke="#E8C766" stroke-width="2.5" marker-end="url(#arrowGold)" fill="none"/>
+
+  <!-- phase 2 label -->
+  <text x="90" y="468" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="700" fill="#E8C766" fill-opacity="0.85" letter-spacing="2">PHASE 2 — EXECUTION</text>
+
+  <!-- ============ HORN (CHANNELING) ============ -->
+  <g>
+    <rect x="460" y="474" width="280" height="58" rx="14" fill="#12664B" stroke="#1FA97A" stroke-width="2"/>
+    <text x="600" y="503" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="19" font-weight="700" fill="#F2EFE6" letter-spacing="2">HORN</text>
+    <text x="600" y="521" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12.5" fill="#7FE6BE" letter-spacing="0.5">CHANNELING · Sonnet · plans the Strike</text>
+  </g>
+  <path d="M600,532 L600,550 L275,550 L275,570" stroke="#1FA97A" stroke-width="2.5" marker-end="url(#arrowJade)" fill="none"/>
+  <path d="M600,532 L600,550 L925,550 L925,570" stroke="#1FA97A" stroke-width="2.5" marker-end="url(#arrowJade)" fill="none"/>
+
+  <!-- ============ STEEL GATE — seam 2, wraps each fist/finger ============ -->
+  <g>
+    <rect x="100" y="572" width="350" height="94" rx="12" fill="#1D1912" stroke="url(#goldRim)" stroke-width="2" stroke-dasharray="7 5"/>
+    <text x="275" y="591" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="700" fill="#F0D68A" letter-spacing="1.5">STEEL GATE — validate + retry (≤2)</text>
+    <rect x="130" y="602" width="290" height="53" rx="10" fill="#163C2E" stroke="#7FE0AE" stroke-width="2"/>
+    <text x="275" y="624" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="15.5" font-weight="700" fill="#F2EFE6" letter-spacing="1">EXECUTION FIST</text>
+    <text x="275" y="641" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#B9F5D3" letter-spacing="0.5">LIGHTNESS · Haiku</text>
+  </g>
+  <g>
+    <rect x="750" y="572" width="350" height="94" rx="12" fill="#1D1912" stroke="url(#goldRim)" stroke-width="2" stroke-dasharray="7 5"/>
+    <text x="925" y="591" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" font-weight="700" fill="#F0D68A" letter-spacing="1.5">STEEL GATE — validate + retry (≤2)</text>
+    <rect x="780" y="602" width="290" height="53" rx="10" fill="#163C2E" stroke="#7FE0AE" stroke-width="2"/>
+    <text x="925" y="624" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="15.5" font-weight="700" fill="#F2EFE6" letter-spacing="1">FINGER</text>
+    <text x="925" y="641" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="11.5" fill="#B9F5D3" letter-spacing="0.5">LIGHTNESS · Haiku</text>
+  </g>
+  <path d="M275,666 L275,684 L560,684 L560,700" stroke="#E8C766" stroke-width="2.5" marker-end="url(#arrowGold)" fill="none"/>
+  <path d="M925,666 L925,684 L640,684 L640,700" stroke="#E8C766" stroke-width="2.5" marker-end="url(#arrowGold)" fill="none"/>
+
+  <!-- ============ RESULTS (artifact) ============ -->
+  <g>
+    <rect x="520" y="702" width="160" height="34" rx="17" fill="#171C19" stroke="#F2EFE6" stroke-width="1.5"/>
+    <text x="600" y="724" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="15" fill="#F2EFE6" letter-spacing="1">Results</text>
+  </g>
+
+  <!-- return path to Pillar -->
+  <path d="M660,712 C 950,700 1165,620 1165,400 C 1165,180 950,78 745,66"
+        stroke="#F2EFE6" stroke-opacity="0.55" stroke-width="2" stroke-dasharray="2 6" fill="none" marker-end="url(#arrowOff)"/>
+  <text transform="translate(1183,480) rotate(-90)" text-anchor="middle" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12.5" fill="#F2EFE6" fill-opacity="0.55" letter-spacing="2.5">RESULTS RETURN TO THE PILLAR</text>
+
+  <!-- ============ LEGEND ============ -->
+  <g>
+    <rect x="60" y="758" width="1080" height="132" rx="12" fill="#12100A" stroke="#C9A227" stroke-opacity="0.45" stroke-width="1.5"/>
+    <text x="90" y="781" font-family="Georgia, 'Times New Roman', serif" font-size="16" fill="#E8C766" letter-spacing="1.5">LEGEND — Discipline → Jade Ability → Agents → Model Grade</text>
+    <line x1="90" y1="792" x2="1110" y2="792" stroke="#E8C766" stroke-opacity="0.25" stroke-width="1"/>
+
+    <text x="90" y="806" font-family="'Helvetica Neue', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#E8C766" fill-opacity="0.7" letter-spacing="1.5">DISCIPLINE</text>
+    <text x="320" y="806" font-family="'Helvetica Neue', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#E8C766" fill-opacity="0.7" letter-spacing="1.5">JADE ABILITY</text>
+    <text x="560" y="806" font-family="'Helvetica Neue', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#E8C766" fill-opacity="0.7" letter-spacing="1.5">AGENTS</text>
+    <text x="830" y="806" font-family="'Helvetica Neue', Arial, sans-serif" font-size="10.5" font-weight="700" fill="#E8C766" fill-opacity="0.7" letter-spacing="1.5">MODEL GRADE</text>
+
+    <!-- PERCEPTION -->
+    <rect x="90" y="816" width="14" height="14" rx="3" fill="#2FD9A6"/>
+    <text x="112" y="827" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="700" fill="#F2EFE6">PERCEPTION</text>
+    <text x="320" y="827" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#F2EFE6" fill-opacity="0.85">sensing / seeing before others strike</text>
+    <text x="560" y="827" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#F2EFE6" fill-opacity="0.85">Weatherman</text>
+    <text x="830" y="827" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#F2EFE6" fill-opacity="0.85">Sonnet</text>
+
+    <!-- CHANNELING -->
+    <rect x="90" y="834" width="14" height="14" rx="3" fill="#1FA97A"/>
+    <text x="112" y="845" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="700" fill="#F2EFE6">CHANNELING</text>
+    <text x="320" y="845" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#F2EFE6" fill-opacity="0.85">projecting jade energy to amplify others</text>
+    <text x="560" y="845" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#F2EFE6" fill-opacity="0.85">Horn</text>
+    <text x="830" y="845" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#F2EFE6" fill-opacity="0.85">Sonnet</text>
+
+    <!-- LIGHTNESS -->
+    <rect x="90" y="852" width="14" height="14" rx="3" fill="#7FE0AE"/>
+    <text x="112" y="863" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="700" fill="#F2EFE6">LIGHTNESS</text>
+    <text x="320" y="863" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#F2EFE6" fill-opacity="0.85">speed &amp; agility — fast, cheap, disposable</text>
+    <text x="560" y="863" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#F2EFE6" fill-opacity="0.85">Rats · Intel/Exec Fists · Fingers</text>
+    <text x="830" y="863" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#F2EFE6" fill-opacity="0.85">Haiku</text>
+
+    <!-- STEEL -->
+    <rect x="90" y="870" width="14" height="14" rx="3" fill="#E8C766"/>
+    <text x="112" y="881" font-family="'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="700" fill="#F2EFE6">STEEL</text>
+    <text x="320" y="881" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#F2EFE6" fill-opacity="0.85">damage resistance — absorbs bad output</text>
+    <text x="560" y="881" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#F2EFE6" fill-opacity="0.85">Steel Gates</text>
+    <text x="830" y="881" font-family="'Helvetica Neue', Arial, sans-serif" font-size="12" fill="#F2EFE6" fill-opacity="0.85">deterministic + Haiku repair</text>
+  </g>
+</svg>

@@ -1,0 +1,21 @@
+{
+  "target": "Anthropic",
+  "tech_stack": [
+    "Large Language Models (LLMs)",
+    "Constitutional AI training methodology",
+    "Reinforcement Learning from Human Feedback (RLHF)",
+    "Claude API (REST)",
+    "claude.ai web interface",
+    "multi-tier model versioning (Claude 3",
+    "Claude Instant)"
+  ],
+  "key_findings": [
+    "Constitutional AI is a training-time intervention, not a runtime guardrail \u2014 safety constraints are baked into the model weights via RLHF plus constitutional principles, meaning the attack surface differs fundamentally from filter-based safety systems",
+    "Anthropic's closed-source posture creates a verification blackout: no public model architecture specs, no disclosed training data sources, no independent benchmark validation \u2014 the safety claims are self-certified",
+    "Enterprise deployment is live and scaling, but pricing structures, SLA tiers, and capability ceilings per tier are undisclosed, creating exploitable ambiguity in competitive positioning conversations"
+  ],
+  "recommended_approach": "Horn should enter through the enterprise adoption angle \u2014 target procurement or engineering leads already evaluating or running Claude API integrations, where the closed-source verification gap is a live operational concern. Leverage the absence of independent Constitutional AI safety audits as a credibility wedge: no third party has confirmed the methodology holds under adversarial or novel misuse conditions, which is a real risk for regulated-industry buyers. Cross-reference Claude model versioning cadence against competitor benchmark releases (GPT-4, Gemini) to surface capability lag or parity, giving Horn concrete comparison ammunition without Anthropic's own data. --- WEATHERMAN OUT",
+  "website_summary": "Anthropic operates claude.ai as a public-facing consumer interface alongside a commercial Claude API, positioning Constitutional AI-trained models across consumer, developer, and enterprise tiers with safety as the core product differentiator.",
+  "github_summary": "No GitHub data \u2014 Anthropic maintains a closed-source posture with no substantive open-source implementation of Constitutional AI or Claude architecture available for external analysis.",
+  "news_summary": "No news data \u2014 enterprise adoption is confirmed active and expanding but specific partnership announcements, funding rounds, or deployment milestones are not captured in current intel cycle."
+}

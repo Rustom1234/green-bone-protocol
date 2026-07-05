@@ -1,0 +1,21 @@
+=== EXPERIMENT: Write and run a Python script that uses the anthropic SDK to prompt Claude Haiku (claude-haiku-20240307) to generate 5 Copenhagen tattoo shop recommendations with shop name, neighborhood, style specialty, and a one-sentence explanation for each. The script should instantiate anthropic.Anthropic() using ANTHROPIC_API_KEY from environment variables, call client.messages.create() with max_tokens=1024 and a structured user prompt, extract the text from response.content[0].text, print the results, and be wrapped in a if __name__ == '__main__' guard. ===
+
+FILE: /homes/rdubash/agents/experiments/write_and_run_a_python_script_that_uses/main.py
+
+RUN OUTPUT:
+
+/homes/rdubash/agents/experiments/write_and_run_a_python_script_that_uses/main.py:22: DeprecationWarning: The model 'claude-3-5-haiku-20241022' is deprecated and will reach end-of-life on February 19th, 2026.
+Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information.
+  response: anthropic.types.Message = client.messages.create(
+Traceback (most recent call last):
+  File "/homes/rdubash/agents/experiments/write_and_run_a_python_script_that_uses/main.py", line 33, in <module>
+    recommendations: str = get_copenhagen_tattoo_recommendations()
+                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/homes/rdubash/agents/experiments/write_and_run_a_python_script_that_uses/main.py", line 22, in get_copenhagen_tattoo_recommendations
+    response: anthropic.types.Message = client.messages.create(
+                                        ~~~~~~~~~~~~~~~~~~~~~~^
+        model="claude-3-5-haiku-20241022",
+        ^
+
+TESTS:
+

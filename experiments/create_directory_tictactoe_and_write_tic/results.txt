@@ -1,0 +1,72 @@
+=== EXPERIMENT: Create directory tictactoe/ and write tictactoe/main.py implementing a terminal-based tic-tac-toe game with: (1) a 9-element list board printed as 3x3 grid with separators, (2) minimax algorithm where AI=O maximizes (+1 win) and Human=X minimizes (-1 win, 0 draw), (3) win detection checking all 8 lines (3 rows, 3 cols, 2 diagonals) and draw detection when board full, (4) main() game loop where human plays X first (input 1-9 with invalid input re-prompt), AI plays O using minimax for optimal move, board printed after each move, win/draw announced before exit. Then run the file with automated input to verify it works correctly without errors. ===
+
+FILE: /homes/rdubash/agents/experiments/create_directory_tictactoe_and_write_tic/main.py
+
+RUN OUTPUT:
+Welcome to Tic-Tac-Toe!
+You are X, AI is O. You go first.
+Enter positions 1-9 to make your move.
+
+
+ 1 | 2 | 3 
+-----------
+ 4 | 5 | 6 
+-----------
+ 7 | 8 | 9 
+
+Enter your move (1-9): 
+ 1 | 2 | 3 
+-----------
+ 4 | X | 6 
+-----------
+ 7 | 8 | 9 
+
+AI is thinking...
+AI plays position 1
+
+ O | 2 | 3 
+-----------
+ 4 | X | 6 
+-----------
+ 7 | 8 | 9 
+
+Enter your move (1-9): That position is already taken. Try another.
+Enter your move (1-9): 
+ O | 2 | 3 
+-----------
+ 4 | X | 6 
+-----------
+ 7 | 8 | X 
+
+AI is thinking...
+AI plays position 3
+
+ O | 2 | O 
+-----------
+ 4 | X | 6 
+-----------
+ 7 | 8 | X 
+
+Enter your move (1-9): That position is already taken. Try another.
+Enter your move (1-9): 
+ O | 2 | O 
+-----------
+ 4 | X | 6 
+-----------
+ X | 8 | X 
+
+AI is thinking...
+AI plays position 2
+
+ O | O | O 
+-----------
+ 4 | X | 6 
+-----------
+ X | 8 | X 
+
+AI wins! Better luck next time.
+
+
+
+TESTS:
+
