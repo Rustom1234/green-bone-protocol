@@ -1,0 +1,164 @@
+{
+  "experiment": "green-bone-protocol architecture cost comparison",
+  "date": "2026-07-05",
+  "method": "Each call run as: env -u ANTHROPIC_API_KEY claude -p --model <opus|sonnet|haiku> --output-format json \"<prompt>\" ; usage and total_cost_usd parsed from the returned JSON. Billed to the Claude subscription (no ANTHROPIC_API_KEY set).",
+  "task": "Write a short structured comparison brief: 'SQLite vs PostgreSQL for a small side project (e.g. a personal to-do app expected to have a few thousand users at most)', with fixed section headers, under 400 words.",
+  "prompts": {
+    "whole_task_prompt": "Write a short structured brief comparing SQLite vs PostgreSQL for a small side project (e.g. a personal to-do app expected to have a few thousand users at most). Use exactly these section headers: OVERVIEW, PROS (SQLite), CONS (SQLite), PROS (PostgreSQL), CONS (PostgreSQL), RECOMMENDATION. Keep the total output under 400 words. Do not use any tools; just answer directly from your own knowledge.\n",
+    "tiered_head_prompt": "You are the planning/coordination step for a short comparative research brief on: SQLite vs PostgreSQL for a small side project (e.g. a personal to-do app expected to have a few thousand users at most).\nProduce ONLY:\n1. A numbered list of exactly 3 subtopics to research (each under 12 words) that field researchers will each investigate independently.\n2. The exact section headers the final synthesized brief must use.\nDo not write the brief itself, do not use any tools. Keep total output under 120 words.\n",
+    "tiered_field_prompt_template": "You are a field researcher gathering raw notes... Your assigned subtopic: <subtopic from head step>. List 5-8 raw bullet-point facts...",
+    "tiered_command_prompt_prefix": "You are the synthesis step... Planning outline from the coordination step: <head output>. Raw field research notes, subtopic 1/2/3: <field outputs>. Synthesize..."
+  },
+  "pricing_used_usd_per_mtok": {
+    "claude-opus-4-8": {
+      "input_per_mtok": 5.0,
+      "output_per_mtok": 25.0
+    },
+    "claude-sonnet-5": {
+      "input_per_mtok": 3.0,
+      "output_per_mtok": 15.0,
+      "note": "intro pricing $2.00/$10.00 per MTok available through 2026-08-31; CLI billed at standard $3.00/$15.00 rate in this run"
+    },
+    "claude-haiku-4-5-20251001": {
+      "input_per_mtok": 1.0,
+      "output_per_mtok": 5.0
+    }
+  },
+  "per_call_measurements": {
+    "opus_only": {
+      "model_tier": "opus",
+      "input_tokens": 6774,
+      "cache_creation_input_tokens": 3691,
+      "cache_read_input_tokens": 15079,
+      "output_tokens": 1030,
+      "reported_total_cost_usd": 0.1040695,
+      "pricing_formula_check_usd": 0.1040695,
+      "duration_ms": 25204,
+      "num_turns": 1,
+      "model_id": "claude-opus-4-8"
+    },
+    "sonnet_only": {
+      "model_tier": "sonnet",
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 14237,
+      "cache_read_input_tokens": 23201,
+      "output_tokens": 927,
+      "reported_total_cost_usd": 0.1062933,
+      "pricing_formula_check_usd": 0.1062933,
+      "duration_ms": 16973,
+      "num_turns": 1,
+      "model_id": "claude-sonnet-5"
+    },
+    "tiered_head_opus": {
+      "model_tier": "opus",
+      "input_tokens": 6774,
+      "cache_creation_input_tokens": 1979,
+      "cache_read_input_tokens": 16798,
+      "output_tokens": 149,
+      "reported_total_cost_usd": 0.065784,
+      "pricing_formula_check_usd": 0.065784,
+      "duration_ms": 13978,
+      "num_turns": 1,
+      "model_id": "claude-opus-4-8"
+    },
+    "tiered_field1_haiku": {
+      "model_tier": "haiku",
+      "input_tokens": 10,
+      "cache_creation_input_tokens": 8870,
+      "cache_read_input_tokens": 17209,
+      "output_tokens": 763,
+      "reported_total_cost_usd": 0.0232859,
+      "pricing_formula_check_usd": 0.0232859,
+      "duration_ms": 12820,
+      "num_turns": 1,
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    "tiered_field2_haiku": {
+      "model_tier": "haiku",
+      "input_tokens": 10,
+      "cache_creation_input_tokens": 5038,
+      "cache_read_input_tokens": 21203,
+      "output_tokens": 868,
+      "reported_total_cost_usd": 0.0165463,
+      "pricing_formula_check_usd": 0.0165463,
+      "duration_ms": 12344,
+      "num_turns": 1,
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    "tiered_field3_haiku": {
+      "model_tier": "haiku",
+      "input_tokens": 10,
+      "cache_creation_input_tokens": 4879,
+      "cache_read_input_tokens": 21203,
+      "output_tokens": 706,
+      "reported_total_cost_usd": 0.0154183,
+      "pricing_formula_check_usd": 0.0154183,
+      "duration_ms": 9085,
+      "num_turns": 1,
+      "model_id": "claude-haiku-4-5-20251001"
+    },
+    "tiered_command_sonnet": {
+      "model_tier": "sonnet",
+      "input_tokens": 2,
+      "cache_creation_input_tokens": 10342,
+      "cache_read_input_tokens": 28574,
+      "output_tokens": 910,
+      "reported_total_cost_usd": 0.0842802,
+      "pricing_formula_check_usd": 0.0842802,
+      "duration_ms": 13730,
+      "num_turns": 1,
+      "model_id": "claude-sonnet-5"
+    }
+  },
+  "arms": {
+    "tiered_green_bone": {
+      "description": "Opus head (plan) -> 3x Haiku field (raw research) -> Sonnet command (synthesis)",
+      "calls": [
+        "tiered_head_opus",
+        "tiered_field1_haiku",
+        "tiered_field2_haiku",
+        "tiered_field3_haiku",
+        "tiered_command_sonnet"
+      ],
+      "total_cost_usd": 0.2053147,
+      "total_input_tokens": 6806,
+      "total_cache_creation_input_tokens": 31108,
+      "total_cache_read_input_tokens": 104987,
+      "total_output_tokens": 3396
+    },
+    "opus_only": {
+      "description": "Whole task done in a single Opus call",
+      "calls": [
+        "opus_only"
+      ],
+      "total_cost_usd": 0.1040695,
+      "total_input_tokens": 6774,
+      "total_cache_creation_input_tokens": 3691,
+      "total_cache_read_input_tokens": 15079,
+      "total_output_tokens": 1030
+    },
+    "sonnet_only": {
+      "description": "Whole task done in a single Sonnet call",
+      "calls": [
+        "sonnet_only"
+      ],
+      "total_cost_usd": 0.1062933,
+      "total_input_tokens": 2,
+      "total_cache_creation_input_tokens": 14237,
+      "total_cache_read_input_tokens": 23201,
+      "total_output_tokens": 927
+    }
+  },
+  "comparisons_pct_cost_difference": {
+    "tiered_vs_opus_only_pct": 97.3,
+    "tiered_vs_sonnet_only_pct": 93.2,
+    "opus_only_vs_sonnet_only_pct": -2.1
+  },
+  "caveats": [
+    "Single representative task, single run per arm (no repeated sampling / variance estimate).",
+    "Measured via the Claude Code CLI (`claude -p`) billed to the subscription, not raw Messages API calls. Each CLI invocation is its own session and pays its own Claude Code system-prompt/tool-schema loading overhead (visible as cache_creation_input_tokens/cache_read_input_tokens far larger than the task prompt itself). This overhead is paid once per CLI call, so the 5-call tiered arm pays it 5x while the single-call arms pay it once. This inflates the tiered arm's absolute cost in this measurement and would not necessarily hold in a production deployment using persistent SDK sessions with a shared cached system prompt across agent hops.",
+    "The tiered arm here is an emulation of the Green Bone Protocol routing strategy (Opus head / Sonnet command / Haiku field) using independent CLI subprocesses, not the actual greenbone/ framework code, since that would require running the full Weatherman/Horn pipeline as separate long-lived agent calls with real orchestration overhead of its own.",
+    "Pricing-formula cost (input*price + cache_creation*price*2 + cache_read*price*0.1 + output*price, per-million-token) was cross-checked against each call's reported total_cost_usd and matched exactly for every call, confirming both the token accounting and the published per-model rates.",
+    "Sonnet 5 has an introductory rate ($2.00/$10.00 per MTok) in effect through 2026-08-31, but the CLI billed this run at the standard $3.00/$15.00 rate \u2014 reported here as measured, not the promotional rate."
+  ]
+}
