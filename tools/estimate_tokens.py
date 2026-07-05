@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 """
-tools/estimate_tokens.py — offline, approximate token/cost estimator for the
+tools/estimate_tokens.py: offline, approximate token/cost estimator for the
 Green Bone Protocol tiered pipeline.
 
 WHAT THIS IS
 ------------
 An APPROXIMATION, not a measurement. It never calls the Anthropic API (not
-even the free `count_tokens` endpoint) — the user has forbidden network
+even the free `count_tokens` endpoint), the user has forbidden network
 calls for this tool. Instead it:
 
   1. Tokenizes REAL logged response text (the sealed Dossier in
      output/anthropic_dossier.json, and the Execution-Fist / Finger outputs
      in output/anthropic_output.json) with `tiktoken`'s `cl100k_base`
-     encoding — OpenAI's tokenizer, used here purely as an off-the-shelf,
+     encoding, OpenAI's tokenizer, used here purely as an off-the-shelf,
      offline BPE approximation of Claude's actual (undisclosed) tokenizer.
   2. Reconstructs the INPUT/prompt text for every call in the pipeline from
      the actual code (system prompts + f-string templates in
@@ -24,12 +24,12 @@ calls for this tool. Instead it:
 THREE TIERS, NOT TWO
 --------------------
 The Green Bone Protocol hierarchy has three model grades (see
-greenbone/agents.py's MODEL_TIERS — the single config this script reads
+greenbone/agents.py's MODEL_TIERS, the single config this script reads
 prices and tier assignments from, never a hardcoded model string):
 
-  HEAD    (Pillar / Channeling — Horn, the coordinator at the top)  -> Opus 4.8
-  COMMAND (Perception — Weatherman)                                 -> Sonnet 5
-  FIELD   (Lightness — Rats, Intel Fists, Execution Fists, Fingers)  -> Haiku 4.5
+  HEAD    (Pillar / Channeling: Horn, the coordinator at the top)  -> Opus 4.8
+  COMMAND (Perception: Weatherman)                                 -> Sonnet 5
+  FIELD   (Lightness: Rats, Intel Fists, Execution Fists, Fingers)  -> Haiku 4.5
 
 This is a change from the framework's earlier 2-tier Command/Field split,
 where Horn and Weatherman were both priced at Sonnet. Horn (Channeling) is
@@ -38,7 +38,7 @@ now its own Head tier, priced at Opus.
 THE COST-REDUCTION NUMBER IS ROBUST TO TOKENIZER BIAS
 ------------------------------------------------------
 Both configs below (TIERED and ALL-HEAD) use the *exact same* token
-counts — the Green Bone Protocol split does not change how many tokens are
+counts: the Green Bone Protocol split does not change how many tokens are
 sent, only which model tier is billed for them. So any systematic over/under
 count from using cl100k_base instead of Claude's real tokenizer applies
 equally to both configs' numerators and denominators and **cancels out of
@@ -50,7 +50,7 @@ PRICING NOTE
 Rates below are the current published Claude API per-million-token rates
 (input/output) as of this writing: Opus 4.8 $5/$25, Sonnet 5 $3/$15 standard
 rate, Haiku 4.5 $1/$5. Sonnet 5 also has an introductory rate of $2/$10
-through 2026-08-31 — this script deliberately prices at the standard,
+through 2026-08-31; this script deliberately prices at the standard,
 non-promotional rate so the estimate doesn't go stale the day the intro
 period ends. Swap PRICES below if you want the introductory number instead.
 
@@ -58,28 +58,28 @@ WHICH RUN THIS RECONSTRUCTS
 ----------------------------
 output/run.log and output/run2.log show the real logged run was made with
 `tasks/research/task.py` (agents "report_fist", "questions_fist", "hn_rat",
-"knowledge_rat" only exist there — NOT in tasks/default/task.py). Rats:
+"knowledge_rat" only exist there, NOT in tasks/default/task.py). Rats:
 WebRat, GitHubRat, HackerNewsRat, KnowledgeRat. Intel fists: StructureFist,
 GapFist. Horn fists: ReportFist ("report"), QuestionsFist ("questions").
 run2.log shows `hn_rat` returned "no data" and NEVER reached its LLM call
 (HackerNewsRat.run returns self._fail(...) before calling the model if the
-HN Algolia search yields no hits) — so it contributes ZERO tokens and is
+HN Algolia search yields no hits), so it contributes ZERO tokens and is
 excluded from the Field-tier call list below. This matches the log's own
 tally: "3 intel packages from rats".
 
-ASSUMPTIONS (read before trusting the numbers — flagged again inline)
+ASSUMPTIONS (read before trusting the numbers, flagged again inline)
 -----------------------------------------------------------------------
 A1. Unlogged Field-tier JSON-extraction completions (rats, intel fists)
-    are assumed to use 55% of their configured `max_tokens` as output —
+    are assumed to use 55% of their configured `max_tokens` as output,
     a documented midpoint of a typical 40-70% fill range for structured
     extraction tasks. This is a HEURISTIC, not tokenized real text.
 A2. WebRat's scraped-page input is assumed to fill 70% of the code's hard
     per-page cap (`text[:8000]` chars) for the one URL actually logged
     (https://anthropic.com).
 A3. GitHubRat's slimmed repo-JSON input assumes ~15 repos (a typical org
-    size guess, not verified — the actual `anthropics` org repo count
+    size guess, not verified; the actual `anthropics` org repo count
     wasn't logged and we do not hit the GitHub API here) at ~80 chars/repo.
-A4. HackerNewsRat is EXCLUDED (see above) — it never called the model.
+A4. HackerNewsRat is EXCLUDED (see above): it never called the model.
 A5. KnowledgeRat's input has no external data dependency, so it is
     computed exactly from the real code template (not a heuristic).
 A6. Horn's plan-output JSON uses the REAL subtask text as logged, but
@@ -92,20 +92,20 @@ A6. Horn's plan-output JSON uses the REAL subtask text as logged, but
 A7. The exact CLI `--goal` string used for this commission was not
     captured in the run logs (only `target=Anthropic` and truncated
     subtask fragments were). A representative goal consistent with the
-    observed subtasks/dossier is substituted here — ASSUMED, flagged.
+    observed subtasks/dossier is substituted here, ASSUMED, flagged.
 A8. Heuristic sub-estimates (A1-A3) that need a chars->tokens conversion
-    use a flat 4 chars/token rule of thumb — NOT tiktoken — because there
+    use a flat 4 chars/token rule of thumb (NOT tiktoken) because there
     is no real text to tokenize for those spans. Every span with real
     logged text is tokenized directly with tiktoken; this heuristic is
     only ever used to size the small handful of never-logged spans.
-A9. Steel (the deterministic validation layer) adds ~0 tokens — it is
+A9. Steel (the deterministic validation layer) adds ~0 tokens: it is
     pure Python (regex/ast/json parsing), no LLM calls except an optional
     rare Haiku repair pass that did not fire in this run. Excluded/shown
     as 0.
 
 Run: `python3 tools/estimate_tokens.py` (uses the repo venv's tiktoken;
 falls back to a chars/4 heuristic for the whole script if tiktoken can't
-be imported at all — see TOKENIZER_LABEL in the output).
+be imported at all; see TOKENIZER_LABEL in the output).
 """
 
 from __future__ import annotations
@@ -124,7 +124,7 @@ sys.path.insert(0, str(REPO))
 # Point tiktoken at a repo-local cache so it NEVER needs a network call to
 # fetch the cl100k_base BPE ranks file, even on first run in a fresh clone
 # (the cache file here was fetched once, out-of-band, the same way `pip
-# install tiktoken` fetches the package itself — not a per-run network call
+# install tiktoken` fetches the package itself, not a per-run network call
 # and not a call to any Anthropic endpoint).
 CACHE_DIR = REPO / ".tiktoken_cache"
 os.environ.setdefault("TIKTOKEN_CACHE_DIR", str(CACHE_DIR))
@@ -215,7 +215,7 @@ subtask_fragments = re.findall(r"\[FIST:(\w+)\]\s(.*)", run_log)
 assert len(subtask_fragments) == 3, subtask_fragments
 SUBTASKS = [frag for _, frag in subtask_fragments]  # in run order: report, report, questions
 
-TARGET = dossier.target  # "Anthropic" — real
+TARGET = dossier.target  # "Anthropic": real
 # A7: exact CLI goal string was never logged; reconstructed to match the
 # subtasks/dossier actually observed. ASSUMED.
 GOAL = (
@@ -232,9 +232,9 @@ GOAL = (
 # Real: target, the 3 successful rat names, the literal template text from
 # clan.py, and the Dossier's actual field content (reformatted back into the
 # WEBSITE:/GITHUB:/NEWS:/TECH_STACK:/FINDINGS:/APPROACH: layout the prompt
-# asked for — the real completion, before clan.py's parser split it apart).
+# asked for (the real completion, before clan.py's parser split it apart).
 # Heuristic: the `cleaned` intel-fist JSON block, which was never logged
-# (see A1) — added as a token COUNT, not fabricated text.
+# (see A1), added as a token COUNT, not fabricated text.
 raw_intel_sources = ["web_rat", "github_rat", "knowledge_rat"]  # hn_rat excluded, see A4
 
 structure_fist_out_tok_heuristic = round(0.55 * 2000)  # A1, StructureFist max_tokens=2000
@@ -466,7 +466,7 @@ tiered_out_cost = tiered_head_out_cost + tiered_cmd_out_cost + tiered_fld_out_co
 tiered_total = tiered_in_cost + tiered_out_cost
 
 # ALL-HEAD baseline: identical token counts, everything run at the HEAD tier
-# (all-Opus) — i.e. what it would cost with no Command/Field split at all.
+# (all-Opus), i.e. what it would cost with no Command/Field split at all.
 total_in = head_in + command_in + field_in
 total_out = head_out + command_out + field_out
 allhead_in_cost, allhead_out_cost = cost(total_in, total_out, Tier.HEAD)
@@ -478,15 +478,15 @@ pct_reduction = (allhead_total - tiered_total) / allhead_total * 100
 # Output: markdown report to stdout + JSON artifact
 # =========================================================================
 lines = []
-lines.append("# Green Bone Protocol — Approximate Token/Cost Estimate\n")
+lines.append("# Green Bone Protocol: Approximate Token/Cost Estimate\n")
 lines.append(
-    "**APPROXIMATE — derived from tokenizing logged text with tiktoken "
+    "**APPROXIMATE, derived from tokenizing logged text with tiktoken "
     "cl100k_base, NOT a measurement of real Anthropic API `usage` fields.**\n"
 )
 lines.append(f"Tokenizer: `{TOKENIZER_LABEL}`\n")
 lines.append(
     "Robustness note: token counts are IDENTICAL between the two configs "
-    "below (same prompts/responses) — the tiered split changes only which "
+    "below (same prompts/responses); the tiered split changes only which "
     "price applies, so any systematic tokenizer bias cancels out of the "
     "% cost-reduction ratio even though it may skew the absolute $ figures.\n"
 )
@@ -544,7 +544,7 @@ lines.append(
 )
 lines.append(
     "- Model tiers and prices are read from `greenbone.agents.MODEL_TIERS` / this script's "
-    "`PRICES` dict, not hardcoded per call site — see the module docstring's PRICING NOTE for "
+    "`PRICES` dict, not hardcoded per call site: see the module docstring's PRICING NOTE for "
     "the exact rates and the Sonnet 5 introductory-pricing caveat."
 )
 
@@ -554,7 +554,7 @@ print(report_md)
 # --- Machine-readable artifact -------------------------------------------
 result = {
     "methodology": (
-        "APPROXIMATE — tokens derived by tokenizing logged text (output/anthropic_dossier.json, "
+        "APPROXIMATE: tokens derived by tokenizing logged text (output/anthropic_dossier.json, "
         "output/anthropic_output.json) with tiktoken cl100k_base as an offline stand-in for "
         "Claude's real (undisclosed) tokenizer, plus reconstructed prompt templates from the "
         "actual pipeline code (greenbone/clan.py, tasks/research/task.py). NOT a measurement of "

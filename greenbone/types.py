@@ -15,7 +15,7 @@ class Rank(Enum):
 
 
 class Discipline(Enum):
-    """The jade ability an agent channels — orthogonal to its Rank (org role)."""
+    """The jade ability an agent channels, orthogonal to its Rank (org role)."""
     PERCEPTION = "perception"
     CHANNELING = "channeling"
     LIGHTNESS  = "lightness"

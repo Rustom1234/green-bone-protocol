@@ -1,5 +1,5 @@
 """
-Default Green Bone Protocol task — general-purpose clan.
+Default Green Bone Protocol task: general-purpose clan.
 Includes WebRat, GitHubRat, NewsRat, TechFist, CleanFist, CodeFist, WriteFist.
 
 The WhatsApp gateway imports build_clan() from here.
@@ -212,7 +212,7 @@ def build_clan() -> Clan:
     )
     horn = Horn(fists={"code": CodeFist(), "write": WriteFist()})
     horn.system_prompt = (
-        "You are the Horn — the execution commander of the clan. "
+        "You are the Horn, the execution commander of the clan. "
         "You receive a Dossier and a goal. Plan the strike and split into precise subtasks. "
         "Every subtask must be specific and actionable. "
         'Available fist types: "code" (write code), "write" (produce documents/plans). '

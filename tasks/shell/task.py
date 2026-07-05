@@ -1,5 +1,5 @@
 """
-Shell task — the clan SSHes into a remote host and runs shell commands.
+Shell task: the clan SSHes into a remote host and runs shell commands.
 
 The host name comes from commission context["host"] and must be resolvable
 via the user's SSH config (~/.ssh/config). Relies on key-based auth.
@@ -148,7 +148,7 @@ class ShellFist(ExecutionFist):
                 "returncode": out.get("returncode", -1),
                 "success": out.get("success", False),
             })
-            self._log(f"  rc={out.get('returncode','?')} — {cmd[:50]}")
+            self._log(f"  rc={out.get('returncode','?')}: {cmd[:50]}")
             if not out.get("success", False):
                 break  # stop on first failure
 

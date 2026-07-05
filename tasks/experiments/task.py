@@ -1,5 +1,5 @@
 """
-Experiments task — the clan writes, runs, and tests code on disk.
+Experiments task: the clan writes, runs, and tests code on disk.
 
 Outputs land in /homes/rdubash/agents/experiments/<slug>/
 Each experiment gets: main.py, test_main.py, results.txt

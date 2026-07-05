@@ -266,7 +266,7 @@ def build_clan() -> Clan:
     )
     horn = Horn(fists={"report": ReportFist(), "questions": QuestionsFist()})
     horn.system_prompt = (
-        "You are the Horn — execution commander of the clan. "
+        "You are the Horn, execution commander of the clan. "
         "You receive a research Dossier and a goal. "
         "Split the goal into 2-3 research output subtasks. "
         'Available fist types: "report" (full technical report with TL;DR + summary + deep explainer), '

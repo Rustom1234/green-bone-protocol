@@ -4,7 +4,7 @@ Unit tests for the STEEL discipline (greenbone/steel.py).
 No network / Anthropic API calls happen in these tests. `greenbone.agents`
 constructs an `anthropic.Anthropic()` client at import time, which requires
 *some* value for ANTHROPIC_API_KEY to be present (it does not need to be a
-real, working key to construct the client) — so we set a dummy one before
+real, working key to construct the client), so we set a dummy one before
 any greenbone import happens.
 
 Run directly:

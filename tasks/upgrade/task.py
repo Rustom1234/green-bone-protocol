@@ -1,11 +1,11 @@
 """
-Upgrade task — the clan researches new tools and writes new capabilities into itself.
+Upgrade task: the clan researches new tools and writes new capabilities into itself.
 
 The clan will:
 1. Research new tools, libraries, GitHub repos, Claude API features, MCP servers
 2. Design new rats/fists/task configs based on what it finds
 3. Write them to tasks/<name>/task.py on disk
-4. They're instantly available — server auto-discovers all task configs
+4. They're instantly available: server auto-discovers all task configs
 
 WhatsApp examples (router picks this automatically):
   "upgrade yourself with new github tools"

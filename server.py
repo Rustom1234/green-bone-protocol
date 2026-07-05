@@ -9,8 +9,8 @@ Clan tasks (web scraping, SSH, parallel research) → planner + dispatcher.
 Both paths send output and files back to WhatsApp.
 
 Commands:
-  stop — cancel current task
-  help — show examples
+  stop: cancel current task
+  help: show examples
 """
 
 import os
@@ -96,12 +96,12 @@ def pick_model(message: str) -> tuple[str, str]:
 ROUTER_PROMPT = """You are the Green Bone Protocol Router. Given a user request, decide how to handle it.
 
 ROUTES:
-- "direct" — Sonnet acts on the machine directly using tools (bash, files). Best for:
+- "direct": Sonnet acts on the machine directly using tools (bash, files). Best for:
   writing/editing code, running scripts, creating files/directories locally, debugging,
   building projects, anything that needs tight reasoning + iteration. Sonnet will have
   full tool access to this machine.
 
-- "clan" — Parallel agent swarm. Best for: web scraping, competitive research, SSH to
+- "clan": Parallel agent swarm. Best for: web scraping, competitive research, SSH to
   remote machines, tasks that benefit from parallelism or running in the background,
   things that don't need tight reasoning (data gathering, multi-source intel).
 
@@ -210,13 +210,13 @@ DIRECT_TOOLS = [
     },
 ]
 
-DIRECT_SYSTEM = f"""You are Claude Code — an expert engineer with full tool access to the user's machine at {WORKDIR}.
+DIRECT_SYSTEM = f"""You are Claude Code, an expert engineer with full tool access to the user's machine at {WORKDIR}.
 Tools available:
-- bash / read_file / write_file / list_dir — act directly on this machine
-- delegate_to_clan — hand off subtasks to the Green Bone Protocol agent swarm (parallel web scraping, SSH, research, etc.)
+- bash / read_file / write_file / list_dir: act directly on this machine
+- delegate_to_clan: hand off subtasks to the Green Bone Protocol agent swarm (parallel web scraping, SSH, research, etc.)
 
 Use delegate_to_clan when a subtask is clearly better as distributed work (e.g. "scrape 5 sites", "SSH into a remote host", "research this company"). Do the rest yourself.
-Work in {WORKDIR} unless told otherwise. Execute, don't just plan. Be concise — user is on WhatsApp.
+Work in {WORKDIR} unless told otherwise. Execute, don't just plan. Be concise, user is on WhatsApp.
 When done, summarise in 2-3 sentences."""
 
 
@@ -384,7 +384,7 @@ def _ask_permission(phone: str, description: str) -> bool:
     granted = event.wait(timeout=60)
     cc_perm_event.pop(phone, None)
     if not granted:
-        send(phone, "⏱ No reply — skipping.")
+        send(phone, "⏱ No reply, skipping.")
         return False
     answer = cc_perm_response.pop(phone, "n").strip().lower()
     return answer in ("y", "yes")
@@ -436,7 +436,7 @@ def run_cc_turn(message: str, phone: str):
                     tool_results.append({
                         "type": "tool_result",
                         "tool_use_id": block.id,
-                        "content": "User denied permission — skipped.",
+                        "content": "User denied permission, skipped.",
                     })
                     log_lines.append(f"⛔ {block.name} denied")
                     continue
@@ -678,7 +678,7 @@ async def webhook(Body: str = Form(...), From: str = Form(...)):
         if From in cc_mode:
             twiml.message(
                 "💻 *Claude Code mode*\n\n"
-                "Describe what you want — I'll do it on the machine.\n"
+                "Describe what you want, I'll do it on the machine.\n"
                 "I'll ask *y/n* before risky ops.\n\n"
                 "• _write a tic-tac-toe game_\n"
                 "• _refactor server.py_\n"

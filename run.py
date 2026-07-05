@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Green Bone Protocol CLI — commission a task from the terminal.
+Green Bone Protocol CLI: commission a task from the terminal.
 
 Usage:
   python run.py commission --target "Stripe" --goal "Build a Python SDK" --urls https://stripe.com --github stripe
@@ -130,7 +130,7 @@ def main():
     add_common(p_commission)
     p_commission.add_argument("--save-output", action="store_true", help="Save Horn output to output/")
 
-    p_intel = sub.add_parser("intel", help="Weatherman only — return sealed dossier")
+    p_intel = sub.add_parser("intel", help="Weatherman only, return sealed dossier")
     add_common(p_intel)
 
     args = parser.parse_args()

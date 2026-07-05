@@ -296,7 +296,7 @@ def build_clan() -> Clan:
     )
     horn = Horn(fists={"battle_card": BattleCardFist(), "swot": SWOTFist()})
     horn.system_prompt = (
-        "You are the Horn — execution commander of the clan. "
+        "You are the Horn, execution commander of the clan. "
         "You receive a competitive intelligence Dossier and a goal. "
         "Split the goal into 2-4 specific competitive analysis subtasks. "
         'Available fist types: "battle_card" (competitive battle card + strategy), '

@@ -1,1 +1,1 @@
-# Green Bone Protocol — Multi-Agent Framework
+# Green Bone Protocol: Multi-Agent Framework

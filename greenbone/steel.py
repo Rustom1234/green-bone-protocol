@@ -1,12 +1,12 @@
 """
-Steel — the STEEL discipline.
+Steel: the STEEL discipline.
 
 Damage resistance: absorb the damage of bad upstream output. Steel is a
 defensive validation layer inserted at the two seams where bad output
 propagates:
 
-  Seam 1 — Dossier Gate:  guard_dossier()  (Weatherman -> Horn)
-  Seam 2 — Strike Gate:   guard_fist()     (Horn -> each Execution Fist)
+  Seam 1: Dossier Gate  guard_dossier()  (Weatherman -> Horn)
+  Seam 2: Strike Gate   guard_fist()     (Horn -> each Execution Fist)
 
 Steel's core is pure-Python / near-zero-token. The ONLY LLM call anywhere in
 this module is the optional, guarded Dossier repair attempt inside
@@ -51,7 +51,7 @@ class Steel(Agent):
     discipline = Discipline.STEEL
     model = model_for(Discipline.STEEL)
     system_prompt = (
-        "You are Steel — damage resistance. You repair a broken Dossier into a "
+        "You are Steel: damage resistance. You repair a broken Dossier into a "
         "minimally safe, honest structure using ONLY the raw material given to "
         "you. Never invent facts. Return JSON: {\"recommended_approach\": \"...\"}"
     )
@@ -63,7 +63,7 @@ class Steel(Agent):
         raise NotImplementedError("Steel is invoked via guard_dossier/guard_fist, not run()")
 
     # ---------------------------------------------------------------
-    # Seam 1 — Dossier Gate
+    # Seam 1: Dossier Gate
     # ---------------------------------------------------------------
 
     def guard_dossier(self, dossier: Dossier | None) -> Dossier:
@@ -76,7 +76,7 @@ class Steel(Agent):
 
     def _guard_dossier(self, dossier: Dossier | None) -> Dossier:
         if dossier is None:
-            self._log("dossier missing entirely — returning safe empty dossier")
+            self._log("dossier missing entirely, returning safe empty dossier")
             return self._empty_dossier("unknown")
 
         issues = []
@@ -128,7 +128,7 @@ class Steel(Agent):
 
         if not safe.recommended_approach:
             safe.recommended_approach = (
-                "No recommendation available — Weatherman output was incomplete."
+                "No recommendation available: Weatherman output was incomplete."
             )
         return safe
 
@@ -159,11 +159,11 @@ class Steel(Agent):
             news_summary="",
             tech_stack=[],
             key_findings=[],
-            recommended_approach="No recommendation available — no Dossier was produced.",
+            recommended_approach="No recommendation available: no Dossier was produced.",
         )
 
     # ---------------------------------------------------------------
-    # Seam 2 — Strike Gate
+    # Seam 2: Strike Gate
     # ---------------------------------------------------------------
 
     def guard_fist(self, fist, task: Task, max_retries: int = 2) -> Result:

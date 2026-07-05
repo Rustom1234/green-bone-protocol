@@ -10,16 +10,16 @@ client = anthropic.Anthropic()
 
 class Tier(Enum):
     """The three model grades in the clan's hierarchy, top to bottom."""
-    HEAD    = "head"     # Pillar / Channeling — the coordinator at the top of the hierarchy
+    HEAD    = "head"     # Pillar / Channeling: the coordinator at the top of the hierarchy
     COMMAND = "command"  # Perception + other Sonnet-grade coordination roles
-    FIELD   = "field"    # Lightness — cheap, high-volume, disposable workers
+    FIELD   = "field"    # Lightness: cheap, high-volume, disposable workers
 
 
 # ---------------------------------------------------------------------------
 # THE single source of truth for "which model backs which tier". Everything
 # else in this codebase (Weatherman, Horn, White Rats, Fists, Fingers, Steel)
 # resolves its model through DISCIPLINE_TIERS + MODEL_TIERS via model_for()
-# rather than hardcoding a model id — change the three values below to
+# rather than hardcoding a model id: change the three values below to
 # repoint the whole framework at different model versions (or providers).
 # ---------------------------------------------------------------------------
 MODEL_TIERS: dict[Tier, str] = {
@@ -31,7 +31,7 @@ MODEL_TIERS: dict[Tier, str] = {
 # Which Discipline (the framework's actual capability tier, orthogonal to
 # organizational Rank) runs at which model Tier.
 DISCIPLINE_TIERS: dict[Discipline, Tier] = {
-    Discipline.CHANNELING: Tier.HEAD,     # Horn — top of the hierarchy
+    Discipline.CHANNELING: Tier.HEAD,     # Horn, top of the hierarchy
     Discipline.PERCEPTION: Tier.COMMAND,  # Weatherman
     Discipline.LIGHTNESS:  Tier.FIELD,    # White Rats, Intel Fists, Execution Fists, Fingers
     Discipline.STEEL:      Tier.FIELD,    # deterministic; Haiku only for the rare guarded repair pass

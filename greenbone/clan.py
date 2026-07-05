@@ -53,7 +53,7 @@ class Weatherman(Agent):
     discipline = Discipline.PERCEPTION
     model = model_for(Discipline.PERCEPTION)
     system_prompt = (
-        "You are the Weatherman — the intelligence commander of the clan. "
+        "You are the Weatherman, the intelligence commander of the clan. "
         "You see everything before the Horn strikes. "
         "Your dossiers are precise, dense, and give the Horn exactly what he needs. "
         "You write in structured formats Horn can parse without an LLM."
@@ -70,7 +70,7 @@ class Weatherman(Agent):
         self._log(f"{len(raw_intel)} intel packages from rats")
         cleaned = self._run_intel_fists(task, raw_intel)
         dossier = self._synthesise_dossier(task, raw_intel, cleaned)
-        self._log(f"dossier sealed — {len(dossier.key_findings)} findings")
+        self._log(f"dossier sealed: {len(dossier.key_findings)} findings")
         return self._ok(dossier)
 
     def _run_rats(self, task: Task) -> list[dict]:
@@ -161,7 +161,7 @@ class Horn(Agent):
     discipline = Discipline.CHANNELING
     model = model_for(Discipline.CHANNELING)
     system_prompt = (
-        "You are the Horn — the execution commander of the clan. "
+        "You are the Horn, the execution commander of the clan. "
         "You receive a Dossier and a goal. You plan the strike and split it into "
         "precise subtasks for your fists. Every subtask must be specific and actionable. "
         "Available fist types: {fist_types}. "
@@ -171,7 +171,7 @@ class Horn(Agent):
 
     def __init__(self, fists: dict[str, ExecutionFist], steel: Steel | None = None):
         self.fists = fists
-        # Steel guard for the Strike Gate (seam 2) — every fist result passes
+        # Steel guard for the Strike Gate (seam 2): every fist result passes
         # through here before it is collected. Clan will share its own Steel
         # instance in here if one wasn't supplied explicitly.
         self.steel = steel or Steel()

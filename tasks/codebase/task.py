@@ -335,7 +335,7 @@ def build_clan() -> Clan:
         "onboard": OnboardFist(),
     })
     horn.system_prompt = (
-        "You are the Horn — execution commander of the clan. "
+        "You are the Horn, execution commander of the clan. "
         "You receive a codebase analysis Dossier and a goal. "
         "Split the goal into 2-4 specific output subtasks. "
         'Available fist types: '
